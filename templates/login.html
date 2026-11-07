@@ -1,0 +1,349 @@
+
+{% extends "base.html" %}
+
+{% block title %}Login | LexiBrief AI{% endblock %}
+
+{% block auth %}
+
+<style>
+/* PAGE BACKGROUND */
+.auth {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 16px;
+    background: #f5f2ff;
+    box-sizing: border-box;
+}
+
+/* LOGIN CARD */
+.login-card {
+    width: 100%;
+    max-width: 430px;
+    background: #ffffff;
+    border: 1px solid #ebe7f5;
+    border-radius: 22px;
+    padding: 42px;
+    box-shadow: 0 18px 55px rgba(49, 35, 95, 0.09);
+}
+
+/* BRAND */
+.login-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 34px;
+}
+
+.logo-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    background: #7048e8;
+    color: white;
+    border-radius: 14px;
+    font-size: 26px;
+}
+
+.logo-name {
+    font-size: 21px;
+    font-weight: 850;
+    color: #191936;
+    line-height: 1.3;
+}
+
+.logo-caption {
+    font-size: 9px;
+    color: #89869c;
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+
+/* HEADING */
+.login-heading {
+    text-align: center;
+    margin-bottom: 29px;
+}
+
+.login-heading h1 {
+    color: #191936;
+    font-size: 28px;
+    font-weight: 850;
+    margin: 0 0 9px;
+}
+
+.login-heading p {
+    color: #89869c;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* FORM */
+.login-field {
+    margin-bottom: 20px;
+}
+
+.login-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 750;
+    color: #34334f;
+    margin-bottom: 9px;
+}
+
+.login-field input {
+    width: 100%;
+    height: 49px;
+    border: 1px solid #e5e2ee;
+    border-radius: 10px;
+    padding: 0 14px;
+    background: #ffffff;
+    color: #25243f;
+    font-size: 13px;
+    outline: none;
+    box-sizing: border-box;
+    transition: .2s;
+}
+
+.login-field input::placeholder {
+    color: #aaa7b7;
+}
+
+.login-field input:focus {
+    border-color: #7048e8;
+    box-shadow: 0 0 0 3px #7048e817;
+}
+
+/* PASSWORD */
+.password-wrap {
+    position: relative;
+}
+
+.password-wrap input {
+    padding-right: 65px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #7048e8;
+    font-size: 11px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+/* BUTTON */
+.login-button {
+    width: 100%;
+    height: 49px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(110deg, #7048e8, #8b63ef);
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 7px;
+    transition: .2s;
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px #7048e833;
+}
+
+/* DIVIDER */
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #aaa7b7;
+    font-size: 10px;
+    margin: 25px 0;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eeecf3;
+}
+
+/* REGISTER */
+.signup-text {
+    text-align: center;
+    font-size: 12px;
+    color: #89869c;
+    margin: 0;
+}
+
+.signup-text a {
+    color: #7048e8;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+/* FOOTER */
+.login-security {
+    text-align: center;
+    color: #aaa7b7;
+    font-size: 10px;
+    margin-top: 27px;
+}
+
+/* RESPONSIVE */
+@media(max-width: 480px) {
+    .login-card {
+        padding: 30px 22px;
+    }
+
+    .login-heading h1 {
+        font-size: 25px;
+    }
+}
+</style>
+
+
+<div class="login-card">
+
+    <!-- BRAND LOGO -->
+    <div class="login-logo">
+
+        <div class="logo-icon">⚖</div>
+
+        <div>
+            <div class="logo-name">LexiBrief AI</div>
+            <div class="logo-caption">
+                LEGAL DOCUMENT INTELLIGENCE
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- HEADING -->
+    <div class="login-heading">
+
+        <h1>Welcome Back</h1>
+
+        <p>
+            Sign in to continue to your<br>
+            intelligent legal workspace.
+        </p>
+
+    </div>
+
+
+    <!-- LOGIN FORM -->
+    <form method="POST" action="{{ url_for('login') }}">
+
+        <!-- EMAIL -->
+        <div class="login-field">
+
+            <label for="email">Email Address</label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+            >
+
+        </div>
+
+
+        <!-- PASSWORD -->
+        <div class="login-field">
+
+            <label for="password">Password</label>
+
+            <div class="password-wrap">
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    id="toggleText"
+                    onclick="togglePassword()"
+                >
+                    Show
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIGN IN -->
+        <button type="submit" class="login-button">
+            Sign In →
+        </button>
+
+    </form>
+
+
+    <!-- DIVIDER -->
+    <div class="login-divider">
+        OR
+    </div>
+
+
+    <!-- REGISTER LINK -->
+    <p class="signup-text">
+        Don't have an account?
+        <a href="{{ url_for('register') }}">
+            Create Account
+        </a>
+    </p>
+
+
+    <!-- SECURITY -->
+    <div class="login-security">
+        🔒 Secure access to your legal workspace
+    </div>
+
+</div>
+
+
+<script>
+function togglePassword() {
+
+    const password = document.getElementById("password");
+    const toggle = document.getElementById("toggleText");
+
+    if (password.type === "password") {
+        password.type = "text";
+        toggle.textContent = "Hide";
+    } else {
+        password.type = "password";
+        toggle.textContent = "Show";
+    }
+
+}
+</script>
+
+{% endblock %}

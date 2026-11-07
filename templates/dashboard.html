@@ -1,0 +1,624 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard · LexiBrief AI{% endblock %}
+
+{% block content %}
+
+<style>
+.dash-wrap {
+    display: grid;
+    gap: 24px;
+}
+
+/* HERO */
+.dash-hero {
+    background: linear-gradient(115deg, #eee9ff, #ddd3ff);
+    padding: 32px 36px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 220px;
+}
+
+.dash-hero .eyebrow,
+.section-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+    color: #7048e8;
+}
+
+.dash-hero h1 {
+    font-size: clamp(27px, 3vw, 38px);
+    line-height: 1.2;
+    font-weight: 850;
+    color: #171936;
+    margin: 12px 0;
+}
+
+.dash-hero h1 span {
+    color: #7048e8;
+}
+
+.dash-hero p {
+    font-size: 13px;
+    color: #626582;
+    max-width: 550px;
+    line-height: 1.7;
+}
+
+.hero-art {
+    font-size: 105px;
+    color: #7048e8;
+    padding: 0 30px;
+}
+
+/* STATISTICS */
+.dash-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e9e8f2;
+    border-radius: 14px;
+    padding: 19px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 5px 18px #20234b08;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    font-size: 23px;
+    flex-shrink: 0;
+}
+
+.purple {
+    background: #f0eaff;
+    color: #7048e8;
+}
+
+.blue {
+    background: #eaf3ff;
+    color: #3987e8;
+}
+
+.green {
+    background: #e8f8f0;
+    color: #159a70;
+}
+
+.stat-card small {
+    display: block;
+    font-size: 11px;
+    color: #85889e;
+}
+
+.stat-card h2 {
+    font-size: 27px;
+    font-weight: 850;
+    color: #171936;
+    margin: 3px 0;
+}
+
+/* SECTION HEADINGS */
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 13px;
+}
+
+.section-heading h2 {
+    font-size: 19px;
+    font-weight: 800;
+    margin: 4px 0;
+    color: #171936;
+}
+
+/* QUICK ACTIONS */
+.quick-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 13px;
+}
+
+.quick-card {
+    background: #fff;
+    border: 1px solid #e9e8f2;
+    border-radius: 13px;
+    padding: 18px;
+    text-decoration: none;
+    color: #171936;
+    transition: .2s;
+}
+
+.quick-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px #20234b12;
+    color: #171936;
+}
+
+.quick-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: #f0eaff;
+    color: #7048e8;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    margin-bottom: 13px;
+}
+
+.quick-card b {
+    display: block;
+    font-size: 13px;
+}
+
+.quick-card small {
+    display: block;
+    color: #85889e;
+    font-size: 11px;
+    margin-top: 5px;
+    line-height: 1.5;
+}
+
+/* BOTTOM PANELS */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 16px;
+}
+
+.dash-panel {
+    background: #fff;
+    border: 1px solid #e9e8f2;
+    border-radius: 15px;
+    padding: 20px;
+    min-width: 0;
+    box-shadow: 0 5px 18px #20234b08;
+}
+
+.panel-link {
+    font-size: 12px;
+    font-weight: 700;
+    color: #7048e8;
+    text-decoration: none;
+}
+
+/* RECENT DOCUMENTS */
+.recent-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid #eeeef5;
+}
+
+.recent-row:last-child {
+    border-bottom: none;
+}
+
+.file-icon {
+    width: 39px;
+    height: 42px;
+    border-radius: 9px;
+    background: #fff0ef;
+    color: #d94f48;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.row-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.row-info b {
+    display: block;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+    color: #252644;
+}
+
+.row-info small {
+    display: block;
+    font-size: 10px;
+    color: #85889e;
+    margin-top: 5px;
+}
+
+.row-actions {
+    display: flex;
+    gap: 9px;
+}
+
+.row-actions a {
+    font-size: 11px;
+    color: #7048e8;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* ACTIVITY */
+.activity-row {
+    display: flex;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid #eeeef5;
+}
+
+.activity-row:last-child {
+    border-bottom: none;
+}
+
+.activity-dot {
+    width: 9px;
+    height: 9px;
+    background: #7048e8;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+
+.activity-info b {
+    display: block;
+    font-size: 12px;
+    color: #252644;
+}
+
+.activity-info small {
+    display: block;
+    font-size: 10px;
+    color: #85889e;
+    margin-top: 5px;
+}
+
+/* EMPTY STATE */
+.empty-state {
+    text-align: center;
+    padding: 27px 10px;
+    color: #85889e;
+}
+
+.empty-state .empty-icon {
+    font-size: 30px;
+    color: #a28bea;
+}
+
+.empty-state b {
+    display: block;
+    font-size: 13px;
+    color: #252644;
+    margin-top: 7px;
+}
+
+.empty-state p {
+    font-size: 11px;
+    margin: 6px 0 12px;
+}
+
+/* RESPONSIVE */
+@media(max-width: 1050px) {
+    .quick-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 760px) {
+    .dash-hero {
+        padding: 24px;
+    }
+
+    .hero-art {
+        display: none;
+    }
+
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 500px) {
+    .dash-stats,
+    .quick-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .recent-row {
+        flex-wrap: wrap;
+    }
+
+    .row-actions {
+        margin-left: 50px;
+    }
+}
+</style>
+
+
+<div class="dash-wrap">
+
+    <!-- HERO SECTION -->
+    <section class="dash-hero">
+
+        <div>
+            <span class="eyebrow">YOUR LEGAL WORKSPACE</span>
+
+            <h1>
+                Manage Legal Documents
+                <br>
+                <span>Smarter with AI</span>
+            </h1>
+
+            <p>
+                Analyze documents, understand important clauses,
+                compare agreements and create legal drafts
+                in one workspace.
+            </p>
+
+            <a class="btn btn-primary"
+               href="{{ url_for('documents') }}">
+                ＋ Upload Document
+            </a>
+        </div>
+
+        <div class="hero-art">⚖</div>
+
+    </section>
+
+
+    <!-- REAL DATABASE STATISTICS -->
+    <section class="dash-stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple">▤</div>
+
+            <div>
+                <small>Total Documents</small>
+
+                <h2>{{ total_documents }}</h2>
+
+                <small>Uploaded documents</small>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">▧</div>
+
+            <div>
+                <small>Pages Processed</small>
+
+                <h2>{{ pages_processed }}</h2>
+
+                <small>Actual PDF pages</small>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">✎</div>
+
+            <div>
+                <small>Drafts Created</small>
+
+                <h2>{{ drafts_created }}</h2>
+
+                <small>Saved legal drafts</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUICK ACTIONS -->
+    <section>
+
+        <div class="section-heading">
+
+            <div>
+                <span class="section-label">WORKSPACE TOOLS</span>
+                <h2>Quick Actions</h2>
+            </div>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+            <a class="quick-card"
+               href="{{ url_for('documents') }}">
+
+                <div class="quick-icon">▤</div>
+
+                <b>Document Analysis</b>
+
+                <small>
+                    Review documents and identify important clauses.
+                </small>
+
+            </a>
+
+
+            <a class="quick-card"
+               href="{{ url_for('documents') }}">
+
+                <div class="quick-icon">☷</div>
+
+                <b>Ask Documents</b>
+
+                <small>
+                    Ask questions based on your uploaded files.
+                </small>
+
+            </a>
+
+
+            <a class="quick-card"
+               href="{{ url_for('compare') }}">
+
+                <div class="quick-icon">⇄</div>
+
+                <b>Compare Documents</b>
+
+                <small>
+                    Find differences between two documents.
+                </small>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECENT DOCUMENTS AND ACTIVITY -->
+    <section class="bottom-grid">
+
+
+        <!-- RECENT DOCUMENTS -->
+        <div class="dash-panel">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-label">YOUR FILES</span>
+                    <h2>Recent Documents</h2>
+                </div>
+
+                <a class="panel-link"
+                   href="{{ url_for('documents') }}">
+                    View All →
+                </a>
+
+            </div>
+
+
+            {% for d in documents %}
+
+            <div class="recent-row">
+
+                <div class="file-icon">FILE</div>
+
+                <div class="row-info">
+
+                    <b>{{ d.original_name }}</b>
+
+                    <small>{{ d.created_at }}</small>
+
+                </div>
+
+                <div class="row-actions">
+
+                    <a href="{{ url_for('analyze', doc_id=d.id) }}">
+                        Analyze
+                    </a>
+
+                    <a href="{{ url_for('ask', doc_id=d.id) }}">
+                        Ask
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">▤</div>
+
+                <b>No documents uploaded yet</b>
+
+                <p>
+                    Uploaded documents will appear here.
+                </p>
+
+                <a href="{{ url_for('documents') }}"
+                   class="btn btn-primary btn-sm">
+                    Upload Document
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- RECENT ACTIVITY -->
+        <div class="dash-panel">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-label">WORKSPACE HISTORY</span>
+                    <h2>Recent Activity</h2>
+                </div>
+
+            </div>
+
+
+            {% for activity in activities %}
+
+            <div class="activity-row">
+
+                <div class="activity-dot"></div>
+
+                <div class="activity-info">
+
+                    <b>{{ activity.details }}</b>
+
+                    <small>{{ activity.created_at }}</small>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">◷</div>
+
+                <b>No recent activity</b>
+
+                <p>
+                    Your completed actions will appear here.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
